@@ -1,7 +1,10 @@
+import os
+from typing import List
+
 import buffer
 from buffer import WriteBuffer
 from score import Beatmap, Score
-from typing import List
+
 
 def unpack_scores(filename: str):
     # https://osu.ppy.sh/help/wiki/osu!_File_Formats/Db_(file_format)#scores.db
@@ -42,11 +45,16 @@ def unpack_scores(filename: str):
     db.close()
     return (beatmaps, version)
 
-def pack_scores(scores: List[Beatmap], version: int, filename: str):
+def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
+    try:
+        os.remove(filename)
+    except OSError:
+        pass
     db = open(filename, "xb")
     b = WriteBuffer()
     b.write_uint(version)
-    for beatmap in scores:
+    b.write_uint(len(beatmap_scores))
+    for beatmap in beatmap_scores:
         b.write_string(beatmap.md5)
         b.write_uint(len(beatmap.scores))
         for score in beatmap.scores:
@@ -74,6 +82,7 @@ def pack_scores(scores: List[Beatmap], version: int, filename: str):
     db.close()
     pass
 
-beatmaps, version = unpack_scores("scores.db")
+# beatmaps, version = unpack_scores("scores.db")
 # pack_scores(beatmaps, version, "repacked.db")
-# beatmaps, version = unpack_scores("repacked.db")
+
+beatmaps, version = unpack_scores("repacked.db")

@@ -1,9 +1,6 @@
 import json
+from typing import List
 
-class Beatmap:
-    md5 = ""
-    num_scores = 0
-    scores = []
 
 class Score:
     mode = -1
@@ -27,3 +24,7 @@ class Score:
 
     def toJSON(self):
         return json.dumps(self, default = lambda o: o.__dict__, sort_keys = True, indent = 4)
+class Beatmap:
+    md5 = ""
+    num_scores = 0
+    scores: List[Score] = []

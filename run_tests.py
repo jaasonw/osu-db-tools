@@ -1,8 +1,9 @@
-from buffer import WriteBuffer
-import buffer
-import struct
 import os
+import struct
 import unittest
+
+import buffer
+from buffer import WriteBuffer
 
 
 class TestReadAndWriteBuffers(unittest.TestCase):
@@ -59,5 +60,3 @@ class TestReadAndWriteBuffers(unittest.TestCase):
             print("pass")
         else:
             print("fail")
-
-    

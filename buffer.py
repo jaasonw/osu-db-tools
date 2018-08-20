@@ -1,5 +1,6 @@
 import struct
 
+
 def read_bool(buffer) -> bool:
     return struct.unpack("<?", buffer.read(1))[0]
 
