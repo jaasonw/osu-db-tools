@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import List
 
 import buffer
@@ -102,11 +103,9 @@ def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
         beatmap.num_scores = len(beatmap.scores)
     return maps1
 
-beatmaps1, version1 = unpack_scores("scores.db")
-beatmaps2, version2 = unpack_scores("_scores.db")
+beatmaps1, version1 = unpack_scores(sys.argv[1])
+beatmaps2, version2 = unpack_scores(sys.argv[2])
 
 final = merge_scores(beatmaps1, beatmaps2)
 
-pack_scores(final, version1, "repacked.db")
-# beatmaps, version = unpack_scores("repacked.db")
-
+pack_scores(final, version1, sys.argv[3])
