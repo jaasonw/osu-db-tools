@@ -12,12 +12,12 @@ def unpack_scores(filename: str):
         version = buffer.read_uint(db)
         numOfMaps = buffer.read_uint(db)
         beatmaps = []
-        for i in range(numOfMaps):
+        for _ in range(numOfMaps):
             beatmap = Beatmap()
             beatmap.scores = []
             beatmap.md5 = buffer.read_string(db)
             beatmap.num_scores = buffer.read_uint(db)
-            for j in range(beatmap.num_scores):
+            for _ in range(beatmap.num_scores):
                 score = Score()
                 score.mode              = buffer.read_ubyte(db)
                 score.version           = buffer.read_uint(db)
