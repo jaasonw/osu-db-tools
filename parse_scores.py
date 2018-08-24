@@ -40,7 +40,7 @@ def unpack_scores(filename: str):
                 score.online_score_id   = buffer.read_ulong(db)
                 
                 beatmap.scores.append(score)
-                print(score.toJSON())
+                # print(score.toJSON())
             beatmaps.append(beatmap)
     db.close()
     return (beatmaps, version)
@@ -82,7 +82,31 @@ def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
     db.close()
     pass
 
-# beatmaps, version = unpack_scores("scores.db")
-# pack_scores(beatmaps, version, "repacked.db")
+def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
+    # the result should be the larger array
+    if len(maps1) < len(maps2):
+        swap = maps1
+        maps1 = maps2
+        maps2 = swap
+    # disgustingly inefficient searching happening here
+    for beatmap in maps1:
+        if beatmap in maps2:
+            for _score in maps2[maps2.index(beatmap)].scores:
+                if _score not in beatmap.scores:
+                    beatmap.scores.append(_score)
+                    print("added score with timestamp: ", _score.timestamp)
+    for beatmap in maps2:
+        if beatmap not in maps1:
+            maps1.append(beatmap)
+            print("appended entire beatmap: ", beatmap, " with ", len(beatmap.scores), " scores")
+        beatmap.num_scores = len(beatmap.scores)
+    return maps1
 
-beatmaps, version = unpack_scores("repacked.db")
+beatmaps1, version1 = unpack_scores("scores.db")
+beatmaps2, version2 = unpack_scores("_scores.db")
+
+final = merge_scores(beatmaps1, beatmaps2)
+
+pack_scores(final, version1, "repacked.db")
+# beatmaps, version = unpack_scores("repacked.db")
+

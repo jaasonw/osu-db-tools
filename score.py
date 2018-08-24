@@ -28,3 +28,5 @@ class Beatmap:
     md5 = ""
     num_scores = 0
     scores: List[Score] = []
+    def __eq__(self, other):
+            return self.md5 == other.md5
