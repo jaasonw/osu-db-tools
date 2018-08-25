@@ -20,31 +20,32 @@ def unpack_scores(filename: str):
             beatmap.num_scores = buffer.read_uint(db)
             for _ in range(beatmap.num_scores):
                 score = Score()
-                score.mode              = buffer.read_ubyte(db)
-                score.version           = buffer.read_uint(db)
-                score.md5               = buffer.read_string(db)
-                score.player_name       = buffer.read_string(db)
-                score.replay_md5        = buffer.read_string(db)
-                score.num_300s          = buffer.read_ushort(db)
-                score.num_100s          = buffer.read_ushort(db)
-                score.num_50s           = buffer.read_ushort(db)
-                score.num_gekis         = buffer.read_ushort(db)
-                score.num_katus         = buffer.read_ushort(db)
-                score.num_misses        = buffer.read_ushort(db)
-                score.replay_score      = buffer.read_uint(db)
-                score.max_combo         = buffer.read_ushort(db)
-                score.perfect_combo     = buffer.read_bool(db)
-                score.mods              = buffer.read_uint(db)
-                score.empty_string      = buffer.read_string(db)
-                score.timestamp         = buffer.read_ulong(db)
-                score.negative_one      = buffer.read_uint(db)
-                score.online_score_id   = buffer.read_ulong(db)
-                
+                score.mode = buffer.read_ubyte(db)
+                score.version = buffer.read_uint(db)
+                score.md5 = buffer.read_string(db)
+                score.player_name = buffer.read_string(db)
+                score.replay_md5 = buffer.read_string(db)
+                score.num_300s = buffer.read_ushort(db)
+                score.num_100s = buffer.read_ushort(db)
+                score.num_50s = buffer.read_ushort(db)
+                score.num_gekis = buffer.read_ushort(db)
+                score.num_katus = buffer.read_ushort(db)
+                score.num_misses = buffer.read_ushort(db)
+                score.replay_score = buffer.read_uint(db)
+                score.max_combo = buffer.read_ushort(db)
+                score.perfect_combo = buffer.read_bool(db)
+                score.mods = buffer.read_uint(db)
+                score.empty_string = buffer.read_string(db)
+                score.timestamp = buffer.read_ulong(db)
+                score.negative_one = buffer.read_uint(db)
+                score.online_score_id = buffer.read_ulong(db)
+
                 beatmap.scores.append(score)
                 # print(score.toJSON())
             beatmaps.append(beatmap)
     db.close()
     return (beatmaps, version)
+
 
 def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
     try:
@@ -83,6 +84,7 @@ def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
     db.close()
     pass
 
+
 def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
     # the result should be the larger array
     if len(maps1) < len(maps2):
@@ -97,16 +99,17 @@ def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
                 if _score not in beatmap.scores:
                     beatmap.scores.append(_score)
                     counter += 1
-                    # print(" added score from beatmap with hash:", beatmap.md5, "with timestamp: ", _score.timestamp)
             if counter > 0:
-                print("added", counter, "score(s) from beatmap with hash:", beatmap.md5)
+                print("added", counter,
+                      "score(s) from beatmap with hash:", beatmap.md5)
     for beatmap in maps2:
         if beatmap not in maps1:
             maps1.append(beatmap)
-            # print("appended entire beatmap: ", beatmap, " with ", len(beatmap.scores), " scores")
-            print("added", len(beatmap.scores), "score(s) from beatmap with hash:", beatmap.md5)
+            print("added", len(beatmap.scores),
+                  "score(s) from beatmap with hash:", beatmap.md5)
         beatmap.num_scores = len(beatmap.scores)
     return maps1
+
 
 beatmaps1, version1 = unpack_scores(sys.argv[1])
 beatmaps2, version2 = unpack_scores(sys.argv[2])

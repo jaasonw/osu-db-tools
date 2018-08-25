@@ -23,10 +23,13 @@ class Score:
     online_score_id = 0
 
     def toJSON(self):
-        return json.dumps(self, default = lambda o: o.__dict__, sort_keys = True, indent = 4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
+
+
 class Beatmap:
     md5 = ""
     num_scores = 0
     scores: List[Score] = []
+
     def __eq__(self, other):
-            return self.md5 == other.md5
+        return self.md5 == other.md5
