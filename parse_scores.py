@@ -92,14 +92,19 @@ def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
     # disgustingly inefficient searching happening here
     for beatmap in maps1:
         if beatmap in maps2:
+            counter = 0
             for _score in maps2[maps2.index(beatmap)].scores:
                 if _score not in beatmap.scores:
                     beatmap.scores.append(_score)
-                    print("added score with timestamp: ", _score.timestamp)
+                    counter += 1
+                    # print(" added score from beatmap with hash:", beatmap.md5, "with timestamp: ", _score.timestamp)
+            if counter > 0:
+                print("added", counter, "score(s) from beatmap with hash:", beatmap.md5)
     for beatmap in maps2:
         if beatmap not in maps1:
             maps1.append(beatmap)
-            print("appended entire beatmap: ", beatmap, " with ", len(beatmap.scores), " scores")
+            # print("appended entire beatmap: ", beatmap, " with ", len(beatmap.scores), " scores")
+            print("added", len(beatmap.scores), "score(s) from beatmap with hash:", beatmap.md5)
         beatmap.num_scores = len(beatmap.scores)
     return maps1
 
@@ -108,4 +113,4 @@ beatmaps2, version2 = unpack_scores(sys.argv[2])
 
 final = merge_scores(beatmaps1, beatmaps2)
 
-pack_scores(final, version1, sys.argv[3])
+pack_scores(final, version1 if version1 > version2 else version2, sys.argv[3])
