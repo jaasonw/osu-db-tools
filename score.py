@@ -25,6 +25,11 @@ class Score:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
 
+    def __eq__(self, other):
+        if self.replay_md5 != "" and other.replay_md5 != "":
+            return self.replay_md5 == other.replay_md5
+        else:
+            return self.replay_score == other.replay_score and self.player_name == other.player_name
 
 class Beatmap:
     md5 = ""
