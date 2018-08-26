@@ -1,6 +1,6 @@
 import os
-import sys
 from typing import List
+from typing import Dict
 
 import buffer
 from buffer import WriteBuffer
@@ -12,13 +12,12 @@ def unpack_scores(filename: str):
     with open(filename, "rb") as db:
         version = buffer.read_uint(db)
         numOfMaps = buffer.read_uint(db)
-        beatmaps = []
+        beatmaps = {}  # beatmaps[md5] = [scores]
         for _ in range(numOfMaps):
-            beatmap = Beatmap()
-            beatmap.scores = []
-            beatmap.md5 = buffer.read_string(db)
-            beatmap.num_scores = buffer.read_uint(db)
-            for _ in range(beatmap.num_scores):
+            scores = []
+            md5 = buffer.read_string(db)
+            num_scores = buffer.read_uint(db)
+            for _ in range(num_scores):
                 score = Score()
                 score.mode = buffer.read_ubyte(db)
                 score.version = buffer.read_uint(db)
@@ -40,14 +39,14 @@ def unpack_scores(filename: str):
                 score.negative_one = buffer.read_uint(db)
                 score.online_score_id = buffer.read_ulong(db)
 
-                beatmap.scores.append(score)
+                scores.append(score)
                 # print(score.toJSON())
-            beatmaps.append(beatmap)
+            beatmaps[md5] = scores
     db.close()
     return (beatmaps, version)
 
 
-def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
+def pack_scores(beatmap_scores: Dict[str, List[Score]], version: int, filename: str):
     try:
         os.remove(filename)
     except OSError:
@@ -56,10 +55,10 @@ def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
     b = WriteBuffer()
     b.write_uint(version)
     b.write_uint(len(beatmap_scores))
-    for beatmap in beatmap_scores:
-        b.write_string(beatmap.md5)
-        b.write_uint(len(beatmap.scores))
-        for score in beatmap.scores:
+    for md5 in beatmap_scores:
+        b.write_string(md5)
+        b.write_uint(len(beatmap_scores[md5]))
+        for score in beatmap_scores[md5]:
             b.write_ubyte(score.mode)
             b.write_uint(score.version)
             b.write_string(score.md5)
@@ -83,37 +82,3 @@ def pack_scores(beatmap_scores: List[Beatmap], version: int, filename: str):
     db.write(b.data)
     db.close()
     pass
-
-
-def merge_scores(maps1: List[Beatmap], maps2: List[Beatmap]):
-    # the result should be the larger array
-    if len(maps1) < len(maps2):
-        swap = maps1
-        maps1 = maps2
-        maps2 = swap
-    # disgustingly inefficient searching happening here
-    for beatmap in maps1:
-        if beatmap in maps2:
-            counter = 0
-            for _score in maps2[maps2.index(beatmap)].scores:
-                if _score not in beatmap.scores:
-                    beatmap.scores.append(_score)
-                    counter += 1
-            if counter > 0:
-                print("added", counter,
-                      "score(s) from beatmap with hash:", beatmap.md5)
-    for beatmap in maps2:
-        if beatmap not in maps1:
-            maps1.append(beatmap)
-            print("added", len(beatmap.scores),
-                  "score(s) from beatmap with hash:", beatmap.md5)
-        beatmap.num_scores = len(beatmap.scores)
-    return maps1
-
-
-beatmaps1, version1 = unpack_scores(sys.argv[1])
-beatmaps2, version2 = unpack_scores(sys.argv[2])
-
-final = merge_scores(beatmaps1, beatmaps2)
-
-pack_scores(final, version1 if version1 > version2 else version2, sys.argv[3])
