@@ -23,6 +23,7 @@ def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
                 if counter > 0:
                     print("added", counter,
                           "score(s) from beatmap with hash:", md5)
+            maps1[md5].sort(key = lambda score: score.replay_score, reverse = True)
     for md5 in maps2:
         if md5 not in maps1:
             maps1[md5] = maps2[md5]
