@@ -32,8 +32,6 @@ def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
     return maps1
 
 if __name__ == "__main__":
-    # beatmaps1, version1 = unpack_scores("scores.db")
-    # pack_scores(beatmaps1, version1, "repacked.db")
     beatmaps1, version1 = unpack_scores(sys.argv[1])
     beatmaps2, version2 = unpack_scores(sys.argv[2])
 

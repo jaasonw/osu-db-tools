@@ -47,11 +47,7 @@ def unpack_scores(filename: str):
 
 
 def pack_scores(beatmap_scores: Dict[str, List[Score]], version: int, filename: str):
-    try:
-        os.remove(filename)
-    except OSError:
-        pass
-    db = open(filename, "xb")
+    print("Packing scores to buffer")
     b = WriteBuffer()
     b.write_uint(version)
     b.write_uint(len(beatmap_scores))
@@ -78,7 +74,12 @@ def pack_scores(beatmap_scores: Dict[str, List[Score]], version: int, filename: 
             b.write_ulong(score.timestamp)
             b.write_uint(score.negative_one)
             b.write_ulong(score.online_score_id)
-
+    print("Writing scores to file")
+    try:
+        os.remove(filename)
+    except OSError:
+        pass
+    db = open(filename, "xb")
     db.write(b.data)
     db.close()
     pass
