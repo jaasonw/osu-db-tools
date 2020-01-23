@@ -90,7 +90,7 @@ def create_db(filename):
             overall_difficulty = buffer.read_float(db)
             slider_velocity = buffer.read_double(db)
             # skip these int double pairs, personally i dont think they're 
-            # important for the purpose of this
+            # important for the purpose of this database
             i = buffer.read_uint(db)
             for _ in range(i):
                 buffer.read_int_double(db)
