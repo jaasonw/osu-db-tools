@@ -22,6 +22,20 @@ def read_double(buffer) -> float:
 def read_ulong(buffer) -> int:
     return struct.unpack("<Q", buffer.read(8))[0]
 
+# osu specific
+def read_int_double(buffer):
+    read_ubyte(buffer)
+    integer = read_uint(buffer)
+    read_ubyte(buffer)
+    double = read_double(buffer)
+    return (integer, double)
+
+def read_timing_point(buffer):
+    bpm = read_double(buffer)
+    offset = read_double(buffer)
+    inherited = read_bool(buffer)
+    return (bpm, offset, inherited)
+
 def read_string(buffer) -> str:
     strlen = 0
     strflag = read_ubyte(buffer)
