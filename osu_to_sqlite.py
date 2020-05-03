@@ -149,7 +149,7 @@ def create_db(filename):
         sql.commit()
         sql.close()
 if __name__ == "__main__":
-    if (len(sys.argv) > 1):
+    if (len(sys.argv) != 2):
         print("Invalid args: osu_to_sqlite.py <osu!.db>")
     else:
         create_db(sys.argv[1])

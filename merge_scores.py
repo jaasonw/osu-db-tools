@@ -32,7 +32,7 @@ def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
     return maps1
 
 if __name__ == "__main__":
-    if (len(sys.argv) > 3):
+    if (len(sys.argv) != 4):
         print("Invalid args: merge_scores.py <score_1.db> <score_2.db> <target.db>")
     else:
         beatmaps1, version1 = unpack_scores(sys.argv[1])
