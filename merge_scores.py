@@ -32,13 +32,16 @@ def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
     return maps1
 
 if __name__ == "__main__":
-    beatmaps1, version1 = unpack_scores(sys.argv[1])
-    beatmaps2, version2 = unpack_scores(sys.argv[2])
+    if (len(sys.argv) > 3):
+        print("Invalid args: merge_scores.py <score_1.db> <score_2.db> <target.db>")
+    else:
+        beatmaps1, version1 = unpack_scores(sys.argv[1])
+        beatmaps2, version2 = unpack_scores(sys.argv[2])
 
-    t0 = time.time()
-    final = merge_scores(beatmaps1, beatmaps2)
-    t1 = time.time()
-    print("merge took:", t1 - t0, "seconds")
+        t0 = time.time()
+        final = merge_scores(beatmaps1, beatmaps2)
+        t1 = time.time()
+        print("merge took:", t1 - t0, "seconds")
 
-    pack_scores(final, version1 if version1 >
-                version2 else version2, sys.argv[3])
+        pack_scores(final, version1 if version1 >
+                    version2 else version2, sys.argv[3])

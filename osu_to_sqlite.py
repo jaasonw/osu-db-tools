@@ -1,5 +1,6 @@
 import buffer
 import sqlite3
+import sys
 
 # osu db can be really big and we probably shouldnt store it in ram
 # but we still want to be able to query it quickly
@@ -148,4 +149,7 @@ def create_db(filename):
         sql.commit()
         sql.close()
 if __name__ == "__main__":
-    create_db("osu!.db")
+    if (len(sys.argv) > 1):
+        print("Invalid args: osu_to_sqlite.py <osu!.db>")
+    else:
+        create_db(sys.argv[1])
