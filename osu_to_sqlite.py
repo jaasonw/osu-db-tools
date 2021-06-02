@@ -7,7 +7,10 @@ import sys
 # solution: parse the db into an sqlite db
 def create_db(filename):
     sql = sqlite3.connect("cache.db")
-    sql.execute("DROP TABLE maps")
+    c = sql.cursor()
+    c.execute(''' SELECT count(name) FROM sqlite_master WHERE type='table' AND name='maps' ''')
+    if c.fetchone()[0] == 1:
+        sql.execute("DROP TABLE maps")
     sql.execute("""
         CREATE TABLE maps (
             artist TEXT,
