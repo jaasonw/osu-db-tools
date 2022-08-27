@@ -79,18 +79,18 @@ class WriteBuffer:
         self.data += struct.pack("<Q", data)
 
     def write_string(self, data: str):
-        if (len(data) > 0):
+        if len(data) > 0:
             self.write_ubyte(0x0b)
             strlen = b""
-            value = len(data)
+            value = len(data.encode('utf-8'))
             while value != 0:
                 byte = (value & 0x7F)
                 value >>= 7
-                if (value != 0):
+                if value != 0:
                     byte |= 0x80
                 strlen += struct.pack("<B", byte)
             self.data += strlen
-            self.data += struct.pack("<" + str(len(data)) +
+            self.data += struct.pack("<" + str(len(data.encode("utf-8"))) +
                                      "s", data.encode("utf-8"))
         else:
             self.write_ubyte(0x0)
