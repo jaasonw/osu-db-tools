@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "osu-db-tools"
+version = "0.1.0"
+description = "A collection of functions and scripts for manipulating the osu! .db files"
+authors = ["jaasonw <jayywong92@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "osu_db_tools"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

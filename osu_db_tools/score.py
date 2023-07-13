@@ -6,6 +6,7 @@ class Score:
     mode = -1
     version = 0
     replay_md5 = ""
+    md5 = ""
     player_name = ""
     num_300s = 0
     num_100s = 0
