@@ -12,6 +12,8 @@ python = "^3.8"
 
 [tool.poetry.scripts]
 merge_scores = "osu_db_tools.merge_scores:main"
+osu_to_sqlite = "osu_db_tools.osu_to_sqlite:main"
+read_collection = "osu_db_tools.read_collection:main"
 
 
 [build-system]

@@ -18,11 +18,12 @@ def collection_to_dict(filename):
             collections["collections"].append(collection)
     return collections
 
-
-if __name__ == "__main__":
+def main():
     if (len(sys.argv) != 2):
         print("Invalid args: read_collection.py <collection.db>")
     else:
         
         print(json.dumps(collection_to_dict(sys.argv[1]), indent=2))
 
+if __name__ == "__main__":
+    main()
