@@ -31,7 +31,9 @@ def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
                     "score(s) from beatmap with hash:", md5)
     return maps1
 
-if __name__ == "__main__":
+
+
+def main():
     if (len(sys.argv) != 4):
         print("Invalid args: merge_scores.py <score_1.db> <score_2.db> <target.db>")
     else:
@@ -45,3 +47,7 @@ if __name__ == "__main__":
 
         pack_scores(final, version1 if version1 >
                     version2 else version2, sys.argv[3])
+
+if __name__ == "__main__":
+    main()
+
