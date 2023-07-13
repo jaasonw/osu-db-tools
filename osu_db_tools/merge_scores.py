@@ -2,9 +2,9 @@ import sys
 import time
 from typing import Dict, List
 
-from score import Score
-from parse_scores import unpack_scores
-from parse_scores import pack_scores
+from osu_db_tools.score import Score
+from osu_db_tools.parse_scores import unpack_scores
+from osu_db_tools.parse_scores import pack_scores
 
 def merge_scores(maps1: Dict[str, List[Score]], maps2: Dict[str, List[Score]]):
     # the result should be the larger array

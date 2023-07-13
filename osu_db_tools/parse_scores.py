@@ -2,9 +2,9 @@ import os
 from typing import List
 from typing import Dict
 
-import buffer
-from buffer import WriteBuffer
-from score import Beatmap, Score
+from osu_db_tools import buffer
+from osu_db_tools.buffer import WriteBuffer
+from osu_db_tools.score import Score
 
 
 def unpack_scores(filename: str):

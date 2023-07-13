@@ -1,4 +1,4 @@
-import buffer
+from osu_db_tools import buffer
 import sqlite3
 import sys
 
