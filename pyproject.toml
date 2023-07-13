@@ -10,6 +10,9 @@ packages = [{include = "osu_db_tools"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 
+[tool.poetry.scripts]
+merge_scores = "osu_db_tools.merge_scores:main"
+
 
 [build-system]
 requires = ["poetry-core"]
