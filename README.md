@@ -9,7 +9,7 @@ pip install git+https://github.com/jaasonw/osu-db-tools.git
 ```
 
 I may or may not add more in the future, depending on my personal needs or future 
-project ideas
+project ideas (Feel free to suggest some!)
 
 Here's an overview of what's included so far
 
